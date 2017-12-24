@@ -82,6 +82,7 @@ INC_ESPCOMP += -I$(ESPCOMP)/wpa_supplicant/include
 INC_ESPCOMP += -I$(ESPCOMP)/wpa_supplicant/port/include
 INC_ESPCOMP += -I$(ESPCOMP)/ethernet/include
 INC_ESPCOMP += -I$(ESPCOMP)/app_trace/include
+INC_ESPCOMP += -I$(ESPCOMP)/app_update/include
 
 CFLAGS_BASE = -std=gnu99 -Os -ffunction-sections -fdata-sections -fstrict-volatile-bitfields -mlongcalls -nostdlib -Wall -Werror -Wno-error=unused-function -Wno-error=unused-but-set-variable -Wno-error=unused-variable -Wno-error=deprecated-declarations -DMBEDTLS_CONFIG_FILE='"mbedtls/esp_config.h"' -DHAVE_CONFIG_H -DESP_PLATFORM
 CFLAGS = $(CFLAGS_BASE) $(INC) $(INC_ESPCOMP)
@@ -564,6 +565,8 @@ ESPIDF_WPA_SUPPLICANT_O = $(addprefix $(ESPCOMP)/wpa_supplicant/,\
 	port/os_xtensa.o \
 	)
 
+ESPIDF_APP_UPDATE_O = $(addprefix $(ESPCOMP)/app_update/,esp_ota_ops.o)
+
 OBJ_ESPIDF =
 OBJ_ESPIDF += $(addprefix $(BUILD)/, $(ESPIDF_NEWLIB_O))
 OBJ_ESPIDF += $(addprefix $(BUILD)/, $(ESPIDF_DRIVER_O))
@@ -582,12 +585,13 @@ OBJ_ESPIDF += $(addprefix $(BUILD)/, $(ESPIDF_LWIP_O))
 OBJ_ESPIDF += $(addprefix $(BUILD)/, $(ESPIDF_MBEDTLS_O))
 OBJ_ESPIDF += $(addprefix $(BUILD)/, $(ESPIDF_XTENSA_DEBUG_MODULE_O))
 OBJ_ESPIDF += $(addprefix $(BUILD)/, $(ESPIDF_TCPIP_ADAPTER_O))
-OBJ_ESPIDF += $(addprefix $(BUILD)/, $(ESPIDF_APP_TRACE_O))
+OBJ_ESPIDF += $(addprefix $(BUILD)/, $(ESPIDF_APP_TRACE_O))	
 OBJ_ESPIDF += $(addprefix $(BUILD)/, $(ESPIDF_NGHTTP_O))
 OBJ_ESPIDF += $(addprefix $(BUILD)/, $(ESPIDF_NVS_FLASH_O))
 OBJ_ESPIDF += $(addprefix $(BUILD)/, $(ESPIDF_OPENSSL_O))
 OBJ_ESPIDF += $(addprefix $(BUILD)/, $(ESPIDF_SPI_FLASH_O))
 OBJ_ESPIDF += $(addprefix $(BUILD)/, $(ESPIDF_WPA_SUPPLICANT_O))
+OBJ_ESPIDF += $(addprefix $(BUILD)/, $(ESPIDF_APP_UPDATE_O))
 ################################################################################
 # Main targets
 
@@ -672,6 +676,9 @@ BOOTLOADER_OBJ = $(addprefix $(BUILD)/bootloader/$(ESPCOMP)/,\
 	spi_flash/spi_flash_rom_patch.o \
 	soc/esp32/rtc_clk.o \
 	soc/esp32/rtc_time.o \
+	soc/esp32/rtc_init.o \
+	soc/esp32/rtc_pm.o \
+	soc/esp32/rtc_sleep.o \
 	micro-ecc/micro-ecc/uECC.o \
 	bootloader/subproject/main/bootloader_start.o \
 	)
